@@ -67,3 +67,36 @@ CREATE TABLE messages (
 );
 
 ALTER TABLE companies ADD COLUMN photo VARCHAR(255);
+
+
+
+
+
+
+
+
+-- some dummy data 
+
+
+INSERT INTO companies (name, bio, address, location, username, password, email, tel, logo_img, photo, account_balance)
+VALUES 
+('Airway Express', 'Leading air travel provider.', '123 Street, Cairo', 'Cairo', 'airwayexpress', 'securepassword', 'contact@airway.com', '1234567890', 'airway_logo.jpg', 'company_photo.jpg', 1000.00);
+
+INSERT INTO passengers (name, email, password, tel, photo, passport_img, account_balance)
+VALUES
+('John Doe', 'john@example.com', 'hashedpassword', '1112223333', 'john_photo.jpg', 'john_passport.jpg', 500.00),
+('Jane Smith', 'jane@example.com', 'hashedpassword2', '4445556666', 'jane_photo.jpg', 'jane_passport.jpg', 300.00);
+
+
+INSERT INTO flights (company_id, name, itinerary, max_passengers, registered_passengers, pending_passengers, fees, start_time, end_time, is_completed)
+VALUES
+(1, 'Cairo to Dubai', 'Cairo - Dubai', 150, 10, 5, 500.00, '2024-12-25 08:30:00', '2024-12-25 12:30:00', 0),
+(1, 'Cairo to London', 'Cairo - London', 200, 50, 10, 1000.00, '2024-12-30 15:00:00', '2024-12-30 21:00:00', 0);
+
+
+-- INSERT INTO flight_passenger (flight_id, passenger_id, status)
+-- VALUES
+--     (1, 1, 'registered'), -- Matches 'omar' with id 1
+--     (1, 6, 'pending'),    -- Matches 'John Doe' with id 6
+--     (2, 7, 'registered'), -- Matches 'Jane Smith' with id 7
+--     (2, 3, 'registered'); -- Matches 'omar' with id 3
