@@ -66,3 +66,4 @@ CREATE TABLE messages (
     FOREIGN KEY (to_user_id) REFERENCES passengers(id)
 );
 
+ALTER TABLE companies ADD COLUMN photo VARCHAR(255);
