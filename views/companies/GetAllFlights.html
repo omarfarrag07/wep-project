@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Flights</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Available Flights</h1>
+    </header>
+
+    <main>
+        <div id="flight-list"></div>
+    </main>
+
+   
+
+    <script>
+        
+        function fetchFlights() {
+            fetch('../../backend/companies/GetAllFlights.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('flight-list').innerHTML = `<p>${data.error}</p>`;
+                    } else {
+                        
+                        let flightListHTML = '';
+                        data.forEach(flight => {
+                            flightListHTML += `
+                                <div class="flight-item">
+                                    <img src="../../images/plane.jpg" class="flight-image" alt="Plane Image">
+                                    <a href="../../views/companies/FlightDetails.html?id=${encodeURIComponent(flight.id)}">
+                                        <h2>${flight.name}</h2>
+                                        <p>${flight.itinerary}</p>
+                                    </a>
+                                </div>
+                            `;
+                        });
+                        document.getElementById('flight-list').innerHTML = flightListHTML;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('flight-list').innerHTML = `<p>Error loading flight data: ${error.message}</p>`;
+                });
+        }
+        document.addEventListener('DOMContentLoaded', fetchFlights);
+    </script>
+</body>
+</html>

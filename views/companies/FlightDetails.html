@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <link rel="stylesheet" href="../css/styles.css"> 
+</head>
+<body>
+    <header>
+        <h1>Flight Details</h1>
+    </header>
+
+    <section class="flight-details">
+        <div class="details-content"> </div>
+    </section>
+
+    <footer>
+        <button><p><a href="GetAllFlights.html">Back to All Flights </a></p></button>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const flightId = urlParams.get('id');
+
+        if (flightId) {
+            fetch(`../../backend/companies/FlightDetails.php?id=${flightId}`)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        document.querySelector('.details-content').innerHTML = `<p>Error: ${data.error}</p>`;
+                    } else {
+                        document.querySelector('.details-content').innerHTML = `
+                            <h2>${data.name}</h2>
+                            <p><strong>Itinerary:</strong> ${data.itinerary}</p>
+                            <p><strong>Fees:</strong> $${data.fees}</p>
+                            <p><strong>Start Time:</strong> ${data.start_time}</p>
+                            <p><strong>End Time:</strong> ${data.end_time}</p>
+                            <p><strong>Max Passengers:</strong> ${data.max_passengers}</p>
+                            <p><strong>Registered Passengers:</strong> ${data.registered_passengers}</p>
+                            <p><strong>Pending Passengers:</strong> ${data.pending_passengers}</p>
+                            <p><strong>Flight Status:</strong> ${data.is_completed ? 'Completed' : 'Pending'}</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.querySelector('.details-content').innerHTML = `<p>Error loading flight details. ${error.message}</p>`;
+                });
+        } else {
+            document.querySelector('.details-content').innerHTML = '<p>No flight ID provided in the URL.</p>';
+        }
+    </script>
+</body>
+</html>
