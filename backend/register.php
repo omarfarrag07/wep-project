@@ -3,7 +3,6 @@
 
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $name=$_POST['name'];
-            $username = $_POST['username'];
             $email = $_POST['email'];
             $password=password_hash($_POST['password'],PASSWORD_BCRYPT);
             $tel=$_POST['tel'];
@@ -19,10 +18,10 @@
                 }else{
                     $table='passengers';
                 }
-                $query = "INSERT INTO $table (name, email, password, tel, photo, username) VALUES (?, ?, ?, ?, ?, ?)";
+                $query = "INSERT INTO $table (name, email, password, tel, photo) VALUES (?, ?, ?, ?, ?)";
 
                 $stablish= $conn->prepare($query);
-                $stablish->bind_param('ssssss', $name, $email, $password, $tel, $photo_name, $username);
+                $stablish->bind_param('sssss', $name, $email, $password, $tel, $photo_name);
 
                 
                 if ($stablish->execute()) {
