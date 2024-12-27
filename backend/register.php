@@ -8,7 +8,6 @@
             $tel=$_POST['tel'];
             $type = $_POST['type'];
             $photo = $_FILES['photo'];
-
             $target_dir="../uploads/";
             $photo_name=basename($photo["name"]);
             $target_file =$target_dir . $photo_name;
