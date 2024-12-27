@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db = 'flight_booking';
 $user = 'root';
-$pass = '';
+$pass = 'Callme02$';
 
 $conn = new mysqli($host, $user, $pass, $db);
 

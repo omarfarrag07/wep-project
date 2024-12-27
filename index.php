@@ -1,5 +1,5 @@
 <?php
 // phpinfo();
-header('Location: views/addflight.html');
+header('Location: views/register.html');
 exit;
 ?>
