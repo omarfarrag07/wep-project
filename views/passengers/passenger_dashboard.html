@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script defer src="../js/passenger_dashboard.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Passenger Dashboard</h1>
+        <nav>
+            <a href="profile.html">Profile</a>
+            <a href="search_flight.html">Search Flights</a>
+            <a href="../../backend/logout.php">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="current-flights">
+            <h2>Current Flights</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Itinerary</th>
+                        <th>Time</th>
+                        <th>Fees</th>
+                    </tr>
+                </thead>
+                <tbody id="current-flight-body">
+
+                </tbody>
+            </table>
+
+        </section>
+
+        <section id="completed-flights">
+            <h2>Completed Flights</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Itinerary</th>
+                        <th>Time</th>
+                        <th>Fees</th>
+                    </tr>
+                </thead>
+                <tbody id="completed-flights-body">
+
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>    
+</html>
