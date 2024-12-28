@@ -4,53 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Details</title>
-    <link rel="stylesheet" href="../css/styles.css"> 
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../images/logo.webp" alt="Company Logo">
+        </div>
+        <ul class="nav-links">
+
+            <li><a href="addflight.html">Add a new flight from here</a></li>
+            <li><a href="GetAllFlights.html">Go to all Flights</a></li>
+        </ul>
+    </nav>
     <header>
         <h1>Flight Details</h1>
     </header>
-
     <section class="flight-details">
-        <div class="details-content"> </div>
+        <table id="details-content"></table>
     </section>
-
-    <footer>
-        <button><p><a href="GetAllFlights.html">Back to All Flights </a></p></button>
-    </footer>
-
+   
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const flightId = urlParams.get('id');
+        const detailsContent = document.getElementById('details-content');
 
         if (flightId) {
             fetch(`../../backend/companies/FlightDetails.php?id=${flightId}`)
-                .then(response => {
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        document.querySelector('.details-content').innerHTML = `<p>Error: ${data.error}</p>`;
+                        detailsContent.innerHTML = `<tr><td colspan="2">Error: ${data.error}</td></tr>`;
                     } else {
-                        document.querySelector('.details-content').innerHTML = `
-                            <h2>${data.name}</h2>
-                            <p><strong>Itinerary:</strong> ${data.itinerary}</p>
-                            <p><strong>Fees:</strong> $${data.fees}</p>
-                            <p><strong>Start Time:</strong> ${data.start_time}</p>
-                            <p><strong>End Time:</strong> ${data.end_time}</p>
-                            <p><strong>Max Passengers:</strong> ${data.max_passengers}</p>
-                            <p><strong>Registered Passengers:</strong> ${data.registered_passengers}</p>
-                            <p><strong>Pending Passengers:</strong> ${data.pending_passengers}</p>
-                            <p><strong>Flight Status:</strong> ${data.is_completed ? 'Completed' : 'Pending'}</p>
+                        detailsContent.innerHTML = `
+                            <tr><td>Flight Name:</td><td>${data.name}</td></tr>
+                            <tr><td>Itinerary:</td><td>${data.itinerary}</td></tr>
+                            <tr><td>Fees:</td><td>$${data.fees}</td></tr>
+                            <tr><td>Start Time:</td><td>${data.start_time}</td></tr>
+                            <tr><td>End Time:</td><td>${data.end_time}</td></tr>
+                            <tr><td>Max Passengers:</td><td>${data.max_passengers}</td></tr>
+                            <tr><td>Registered Passengers:</td><td>${data.registered_passengers}</td></tr>
+                            <tr><td>Pending Passengers:</td><td>${data.pending_passengers}</td></tr>
+                            <tr><td>Flight Status:</td><td>${data.is_completed ? 'Completed' : 'Pending'}</td></tr>
                         `;
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    document.querySelector('.details-content').innerHTML = `<p>Error loading flight details. ${error.message}</p>`;
+                    detailsContent.innerHTML = `<tr><td colspan="2">Error loading flight details: ${error.message}</td></tr>`;
                 });
         } else {
-            document.querySelector('.details-content').innerHTML = '<p>No flight ID provided in the URL.</p>';
+            detailsContent.innerHTML = '<tr><td colspan="2">No flight ID provided in the URL.</td></tr>';
         }
     </script>
 </body>
