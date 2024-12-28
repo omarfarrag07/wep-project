@@ -1,5 +1,5 @@
 <?php
-include('db.php');
+include('../db.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $company_id = isset($_GET['company_id']) ? intval($_GET['company_id']) : null;
@@ -13,18 +13,21 @@ if ($company_id) {
 if ($start_time) {
     $query .= " AND start_time = $start_time";
 }if ($end_time) {
-    $query .= " AND start_time = $$end_time";
-}($fees) {
+    $query .= " AND start_time = $end_time";
+}if($fees) {
     $query .= " AND fees = $fees";
 }
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-    // Process each row
-    echo "Flight ID: " . $row['id'] . " - Name: " . $row['name'] . "<br>";
+if (!$result) {
+    echo "No flights found";
+} else { 
+    while ($row = $result->fetch_assoc()) {
+        echo "Flight ID: " . $row['id'] . " - Name: " . $row['name'] . "<br>";
+    }
 }
-$stmt->close();
-$conn->close();
+
+return $result;
 }
 ?>

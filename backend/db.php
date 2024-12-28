@@ -1,13 +1,22 @@
+
 <?php
-    $host='localhost';
-    $db='flight_booking';
-    $user='root';
-    $pass='Callme02$';
 
-    $conn=new mysqli($host,$user,$pass,$db);
+$host = 'localhost';
+$user = 'root';
+$pass = 'G4@67&*mQnY!';
+$db = 'flight_booking';
 
-    if($conn->connect_error){
-        die("Database connection failed: " . $conn->connect_error);
-    }
+
+global $conn;  
+$conn = new mysqli($host, $user, $pass, $db); 
+
+
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected successfully to the database.";
+}
+
 
 ?>
