@@ -1,0 +1,44 @@
+/* company.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #4a90e2;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.company-logo img {
+    display: block;
+    margin: 20px auto;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    width: 150px;
+    height: auto;
+}

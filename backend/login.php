@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_type'] = $user['type'];
 
             if ($user['type'] === 'company') {
-                header("Location: ../views/companies/CompanyProfile.html");
+                header("Location: ../views/companies/profile.html");
             } else {
                 header("Location: ../views/passengers/profile.html");
             }
