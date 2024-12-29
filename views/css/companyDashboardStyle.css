@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    width: 100%;
+    background-color: #2C3E50;
+    color: white;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px 20px;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.company-name {
+    font-size: 24px;
+}
+
+.header ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;  
+}
+
+.header ul li {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+}
+
+.header ul li a:hover {
+    background-color: #34495E;
+    border-radius: 5px;
+}
+
+.logout {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 1%; 
+    cursor: pointer;
+    color: white;
+}
+
+.logout a {
+    color: white;
+    text-decoration: none;
+}
+
+.logout:hover {
+    background-color: #34495E;
+    border-radius: 5px;
+}
+
+.main-content {
+    padding: 20px;
+    margin-top: 60px;  
+}
+.welcome {
+    text-align: center;
+    color:#999999;
+}
+.flightList_h2
+{
+    color: #34495E;
+    text-align: center;
+}
+.dashboard-body {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.flight-item {
+    background-color: #ecf0f1;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}

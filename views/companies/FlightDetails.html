@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../images/logo.webp" alt="Company Logo">
+        </div>
+        <ul class="nav-links">
+
+            <li><a href="addflight.html">Add a new flight from here</a></li>
+            <li><a href="GetAllFlights.html">Go to all Flights</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Flight Details</h1>
+    </header>
+    <section class="flight-details">
+        <table id="details-content"></table>
+    </section>
+   
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const flightId = urlParams.get('id');
+        const detailsContent = document.getElementById('details-content');
+
+        if (flightId) {
+            fetch(`../../backend/companies/FlightDetails.php?id=${flightId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        detailsContent.innerHTML = `<tr><td colspan="2">Error: ${data.error}</td></tr>`;
+                    } else {
+                        detailsContent.innerHTML = `
+                            <tr><td>Flight Name:</td><td>${data.name}</td></tr>
+                            <tr><td>Itinerary:</td><td>${data.itinerary}</td></tr>
+                            <tr><td>Fees:</td><td>$${data.fees}</td></tr>
+                            <tr><td>Start Time:</td><td>${data.start_time}</td></tr>
+                            <tr><td>End Time:</td><td>${data.end_time}</td></tr>
+                            <tr><td>Max Passengers:</td><td>${data.max_passengers}</td></tr>
+                            <tr><td>Registered Passengers:</td><td>${data.registered_passengers}</td></tr>
+                            <tr><td>Pending Passengers:</td><td>${data.pending_passengers}</td></tr>
+                            <tr><td>Flight Status:</td><td>${data.is_completed ? 'Completed' : 'Pending'}</td></tr>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    detailsContent.innerHTML = `<tr><td colspan="2">Error loading flight details: ${error.message}</td></tr>`;
+                });
+        } else {
+            detailsContent.innerHTML = '<tr><td colspan="2">No flight ID provided in the URL.</td></tr>';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Flight</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../images/logo.webp" alt="Company Logo">
+        </div>
+        <ul class="nav-links">
+
+            <li><a href="GetAllFlights.html">Go to all Flights</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Add New Flight</h1>
+    </header>
+    <form action="../../backend/companies/addflight.php" method="POST">
+        <table>
+            <tr>
+                <td><label for="name">Flight Name:</label></td>
+                <td><input type="text" id="name" name="name" required></td>
+            </tr>
+            <tr>
+                <td><label for="itinerary">Itinerary:</label></td>
+                <td><textarea id="itinerary" name="itinerary" required></textarea></td>
+            </tr>
+            <tr>
+                <td><label for="max_passengers">Max Passengers:</label></td>
+                <td><input type="number" id="max_passengers" name="max_passengers" required></td>
+            </tr>
+            <tr>
+                <td><label for="fees">Flight Fees:</label></td>
+                <td><input type="number" id="fees" name="fees" step="0.01" required></td>
+            </tr>
+            <tr>
+                <td><label for="start_time">Start Time:</label></td>
+                <td><input type="datetime-local" id="start_time" name="start_time" required></td>
+            </tr>
+            <tr>
+                <td><label for="end_time">End Time:</label></td>
+                <td><input type="datetime-local" id="end_time" name="end_time" required></td>
+            </tr>
+        </table>
+        <button type="submit">Add Flight</button>
+    </form>
+</body>
+</html>

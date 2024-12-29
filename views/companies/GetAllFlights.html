@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Flights</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../../images/logo.webp" alt="Company Logo">
+        </div>
+        <ul class="nav-links">
+
+            <li><a href="addflight.html">Add a new flight from here </a></li>
+            
+        </ul>
+    </nav>
+    <header>
+        <h1>Available Flights</h1>
+    </header>
+    <main id="flight-list"></main>
+    <script>
+        function fetchFlights() {
+            fetch('../../backend/companies/GetAllFlights.php')
+                .then(response => response.json())
+                .then(data => {
+                    const flightList = document.getElementById('flight-list');
+                    if (data.error) {
+                        flightList.innerHTML = `<p>${data.error}</p>`;
+                    } else {
+                        let items = '';
+                        data.forEach(flight => {
+                            items += `
+                                <div class="flight-item">
+                                    <img src="../../images/plane.jpg" class="flight-image" alt="Plane">
+                                    <div class="flight-info">
+                                        <a href="../../views/companies/FlightDetails.html?id=${flight.id}">
+                                            <h2>${flight.name}</h2>
+                                        </a>
+                                        <p>${flight.itinerary}</p>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        flightList.innerHTML = items;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('flight-list').innerHTML = `<p>Error loading flights: ${error.message}</p>`;
+                });
+        }
+        document.addEventListener('DOMContentLoaded', fetchFlights);
+    </script>
+</body>
+</html>
