@@ -10,14 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
     
-    
     if (isset($_SESSION['user_id']) && $_SESSION['user_type'] === 'company') {
         $company_id = $_SESSION['user_id'];
 
-        $query = "INSERT INTO flights (company_id, name, itinerary, max_passengers, fees, start_time, end_time) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO flights (company_id, name, itinerary, max_passengers, pending_passengers, fees, start_time, end_time) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("issdsss", $company_id, $name, $itinerary, $max_passengers, $fees, $start_time, $end_time);
+
+       
+        $pending_passengers = $max_passengers;
+
+        $stmt->bind_param("issddsss", $company_id, $name, $itinerary, $max_passengers, $pending_passengers, $fees, $start_time, $end_time);
 
         if ($stmt->execute()) {
             header("Location: ../../views/companies/GetAllFlights.html?success=1");

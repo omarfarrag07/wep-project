@@ -8,6 +8,8 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
     padding: 20px;
 }
 
@@ -18,10 +20,10 @@ h1 {
     margin-bottom: 20px;
 }
 
-div {
+.profile-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 30px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -32,18 +34,30 @@ p {
     margin: 10px 0;
 }
 
-#profile-picture,
-#passport-image {
-    margin-top: 20px;
-    text-align: center;
+ul {
+    list-style: none;
+    padding: 0;
 }
 
-#profile-picture img,
-#passport-image img {
+ul li {
+    font-size: 16px;
+    padding: 5px 0;
+    color: #555;
+}
+
+.company-logo img {
+    display: block;
+    margin: 20px auto;
     border-radius: 8px;
     border: 2px solid #ddd;
-    max-width: 150px;
+    width: 150px;
     height: auto;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for company logo */
+.company-logo img:hover {
+    transform: scale(1.1);
 }
 
 /* Button style */

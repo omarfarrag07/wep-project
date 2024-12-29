@@ -1,8 +1,10 @@
+
 <?php
+
 $host = 'localhost';
 $db = 'flight_booking';
 $user = 'root';
-$pass = 'Callme02$';
+$pass = '';
 
 $conn = new mysqli($host, $user, $pass, $db);
 

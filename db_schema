@@ -14,7 +14,7 @@ CREATE TABLE companies (
     email VARCHAR(255) UNIQUE NOT NULL,
     tel VARCHAR(15),
     logo_img VARCHAR(255),
-    account_balance DECIMAL(10, 2) DEFAULT 0.00
+    account_balance DECIMAL(10, 2) DEFAULT 0.00 
 );
 
 -- Passengers Table
@@ -37,7 +37,7 @@ CREATE TABLE flights (
     itinerary TEXT NOT NULL,
     max_passengers INT NOT NULL,
     registered_passengers INT DEFAULT 0,
-    pending_passengers INT DEFAULT 0,
+    pending_passengers INT DEFAULT 0, 
     fees DECIMAL(10, 2) NOT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
@@ -68,6 +68,8 @@ CREATE TABLE messages (
 
 ALTER TABLE companies ADD COLUMN photo VARCHAR(255);
 
+ALTER TABLE flights ADD COLUMN takeoff VARCHAR(255);
+ALTER TABLE flight ADD COLUMN destination VARCHAR(255);
 
 
 
