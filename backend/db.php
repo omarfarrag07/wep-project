@@ -1,4 +1,6 @@
+
 <?php
+
 $host = 'localhost';
 $db = 'flight_booking';
 $user = 'root';
