@@ -68,6 +68,8 @@ CREATE TABLE messages (
 
 ALTER TABLE companies ADD COLUMN photo VARCHAR(255);
 
+ALTER TABLE flights ADD COLUMN takeoff VARCHAR(255);
+ALTER TABLE flight ADD COLUMN destination VARCHAR(255);
 
 
 
