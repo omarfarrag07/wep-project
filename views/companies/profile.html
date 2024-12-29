@@ -22,10 +22,10 @@
             document.getElementById('company-address').textContent = data.address || 'N/A';
 
             const logoContainer = document.getElementById('company-logo');
-            if (data.logo_img) {
+            if (data.photo) {
                 const timestamp = new Date().getTime(); 
                 const img = document.createElement('img');
-                img.src = `http://localhost/wep-project/uploads/${data.logo_img}?t=${timestamp}`;
+                img.src = `http://localhost/wep-project/uploads/${data.photo}?t=${timestamp}`;
                 img.alt = 'Company Logo';
                 img.width = 150;
                 logoContainer.innerHTML = ''; 
@@ -41,6 +41,10 @@
                     const li = document.createElement('li');
                     li.textContent = `Flight: ${flight.name}, Itinerary: ${flight.itinerary}, Fees: $${flight.fees}`;
                     flightsList.appendChild(li);
+                    const link = document.createElement('a');
+                    link.href = `GetAllFlights.html?id=${flight.id}`;
+                    link.textContent = "See details";
+                    li.appendChild(link);
                 });
             } else {
                 flightsList.textContent = 'No flights available.';
@@ -62,7 +66,7 @@
         <h2>Available Flights</h2>
         <ul id="flights-list">Loading...</ul>
 
-        <button onclick="window.location.href = 'edit.html';">Edit Profile</button>
+        <button onclick="window.location.href = 'edit-profile.html';">Edit Profile</button>
     </div>
 </body>
 </html>

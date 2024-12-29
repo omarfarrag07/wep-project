@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
 
 $company_id = $_SESSION['user_id'];
 
-$query = "SELECT id, name, bio, address, logo_img FROM companies WHERE id = ?";
+$query = "SELECT id, name, bio, address, photo FROM companies WHERE id = ?";
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {
@@ -68,7 +68,7 @@ $response = [
     'name' => $company['name'],
     'bio' => $company['bio'],
     'address' => $company['address'],
-    'logo_img' => $company['logo_img'],
+    'photo' => $company['photo'],
     'flights' => $flights,
 ];
 
