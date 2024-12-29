@@ -15,7 +15,7 @@ $company_id = $_SESSION['user_id'];
 error_log('Company ID: ' . $company_id);
 
 $sql = "
-    SELECT f.id AS flight_id, f.name AS flight_name, f.itinerary
+    SELECT f.id , f.name, f.itinerary
     FROM flights f
     WHERE f.company_id = ?
 ";
@@ -41,8 +41,8 @@ $flights = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $flights[] = [
-            'flight_id' => $row['flight_id'],
-            'flight_name' => $row['flight_name'],
+            'id' => $row['id'],
+            'name' => $row['name'],
             'itinerary' => $row['itinerary'],
            
         ];
