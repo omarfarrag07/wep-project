@@ -12,7 +12,7 @@
         $passengerId = $_SESSION['user_id'];
 
         try {
-            $currentQuery="SELECT F.id, f.name, f.itinerary, f.time, f.fees
+            $currentQuery="SELECT f.id, f.name, f.itinerary, f.start_time, f.fees
                     FROM flights f
                     JOIN flight_passenger b on f.id = b.flight_id
                     WHERE b.passenger_id =? AND f.start_time > NOW()
@@ -22,7 +22,7 @@
             $stablish->execute();
             $currentFlights =$stablish->get_result()->fetch_all(MYSQLI_ASSOC);
 
-            $completedQuery="SELECT f.id, f.name, f.itinerary, f.time, f.fees 
+            $completedQuery="SELECT f.id, f.name, f.itinerary, f.start_time, f.fees 
                               FROM flights f
                               JOIN flight_passenger b ON f.id = b.flight_id
                               WHERE b.passenger_id = ? AND f.start_time <= NOW()";
