@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['type'] === 'company') {
                 header("Location: ../views/companies/CompanyProfile.html");
             } else {
-                header("Location: ../views/passengers/profile.html");
+                header("Location: ../views/passengers/passenger_dashboard.html");
             }
         } else {
             echo "Invalid password.";

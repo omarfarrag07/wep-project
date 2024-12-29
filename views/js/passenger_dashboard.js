@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',()=>{
-    fetch('/backend/passenger/get_passenger_dashboard.php')
+    fetch('../../backend/passengers/get_passenger_dashboard.php')
     .then(response=>{
         if(!response.ok){
             throw new Error("Faild to fetch dashboard");
@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
 
         const currentFlightsBody=document.getElementById('current-flights-body');
-        data.current_flights.array.forEach(flight => {
+        if (!currentFlightsBody ) {
+            console.error('Table body elements are missing.');
+            return;
+        }
+        data.current_flights.forEach(flight => {
             const row=document.createElement('tr');
             row.innerHTML=`
             <td>${flight.id}</td>
@@ -28,6 +32,10 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
         const completedFlightsBody=document.getElementById('completed-flights-body');
+        if (!completedFlightsBody) {
+            console.error('Table body elements are missing.');
+            return;
+        }
         data.completed_flights.forEach(flight=>{
             const row=document.createElement('tr');
             row.innerHTML=`
