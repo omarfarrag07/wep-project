@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once 'C:/wamp64/www/wep-project/backend/db.php';
+require_once '../db.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
@@ -22,16 +22,20 @@ $company_id = $_SESSION['user_id'];
 $name = $_POST['name'] ?? null;
 $bio = $_POST['bio'] ?? null;
 $address = $_POST['address'] ?? null;
+$tel = $_POST['tel'] ?? null;
+$email = $_POST['email'] ?? null;
+$location = $_POST['location'] ?? null;
+$password = $_POST['password'] ?? null;
 
-if (!$name || !$bio || !$address) {
+if (!$name || !$bio || !$address || !$tel || !$email || !$location) {
     http_response_code(400);
-    echo json_encode(['error' => 'All fields are required.']);
+    echo json_encode(['error' => 'All fields except password are required.']);
     exit;
 }
 
 $photo = null;
 if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = 'C:/wamp64/www/wep-project/uploads/';
+    $upload_dir = '../../uploads/';
     $file_name = basename($_FILES['photo']['name']);
     $target_file = $upload_dir . $file_name;
 
@@ -44,7 +48,27 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-$query = "UPDATE companies SET name = ?, bio = ?, address = ?" . ($photo ? ", photo = ?" : "") . " WHERE id = ?";
+$query = "UPDATE companies SET name = ?, bio = ?, address = ?, tel = ?, email = ?, location = ?";
+$params = [$name, $bio, $address, $tel, $email, $location];
+$types = "ssssss";
+
+if ($photo) {
+    $query .= ", photo = ?";
+    $params[] = $photo;
+    $types .= "s";
+}
+
+if ($password) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $query .= ", password = ?";
+    $params[] = $hashed_password;
+    $types .= "s";
+}
+
+$query .= " WHERE id = ?";
+$params[] = $company_id;
+$types .= "i";
+
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {
@@ -53,11 +77,7 @@ if (!$stmt) {
     exit;
 }
 
-if ($photo) {
-    $stmt->bind_param('ssssi', $name, $bio, $address, $photo, $company_id);
-} else {
-    $stmt->bind_param('sssi', $name, $bio, $address, $company_id);
-}
+$stmt->bind_param($types, ...$params);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true]);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Profile</title>
-    <link rel="stylesheet" href="../css/companyDashboardStyle.css">
+    <link rel="stylesheet" href="../css/company-profile.css">
 </head>
 <body>
     
@@ -42,11 +42,11 @@
 
     <script>
        //3shan company name ytl3 fl welcome 
-        fetch('../../backend/companies/CompanyProfile.php')
+        fetch('../../backend/companies/profile.php')
             .then(response => response.json())
             .then(data => {
               
-                document.getElementById('company-name').textContent = data.company_name;
+                document.getElementById('company-name').textContent = data.name;
             })
             .catch(error => {
                 console.error('Error fetching company name:', error);

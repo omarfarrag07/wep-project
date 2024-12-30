@@ -19,6 +19,9 @@
             <label for="tel">Telephone:</label>
             <input type="tel" id="tel" name="tel" required>
 
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+
             <label for="photo">Profile Photo :</label>
             <input type="file" id="photo" name="photo" accept="image/*">
 
@@ -33,7 +36,7 @@
     <script>
         const form = document.getElementById('edit-form');
 
-        fetch('http://localhost/wep-project/backend/passengers/profile.php', {
+        fetch('../../backend/passengers/profile.php', {
             method: 'GET',
             credentials: 'include',
         })
@@ -57,7 +60,7 @@
 
             const formData = new FormData(form);
 
-            fetch('http://localhost/wep-project/backend/passengers/edit-profile.php', {
+            fetch('../../backend/passengers/edit-profile.php', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include', 

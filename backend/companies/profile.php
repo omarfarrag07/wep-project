@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once 'C:/wamp64/www/wep-project/backend/db.php';
+require_once '../db.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
 
 $company_id = $_SESSION['user_id'];
 
-$query = "SELECT id, name, bio, address, photo FROM companies WHERE id = ?";
+$query = "SELECT id, name, bio, address, tel, location, account_balance, photo FROM companies WHERE id = ?";
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {
@@ -41,39 +41,18 @@ if ($result->num_rows === 0) {
 
 $company = $result->fetch_assoc();
 
-$query = "SELECT id, name, itinerary, fees FROM flights WHERE company_id = ?";
-$stmt = $conn->prepare($query);
-
-if (!$stmt) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database error: Failed to prepare statement.']);
-    exit;
-}
-
-$stmt->bind_param('i', $company_id);
-$stmt->execute();
-$flights_result = $stmt->get_result();
-
-if ($flights_result->num_rows > 0) {
-    $flights = [];
-    while ($row = $flights_result->fetch_assoc()) {
-        $flights[] = $row;
-    }
-} else {
-    $flights = [];
-}
-
 $response = [
     'id' => $company['id'],
     'name' => $company['name'],
     'bio' => $company['bio'],
     'address' => $company['address'],
+    'tel' => $company['tel'],
+    'loc' => $company['location'],
+    'account_balance' => $company['account_balance'],
     'photo' => $company['photo'],
-    'flights' => $flights,
 ];
 
 header('Content-Type: application/json');
 echo json_encode($response);
 exit;
-
 ?>
