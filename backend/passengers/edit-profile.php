@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once 'C:/wamp64/www/wep-project/backend/db.php';
+require_once '../db.php';
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'passenger') {
@@ -22,16 +22,17 @@ $passenger_id = $_SESSION['user_id'];
 $name = $_POST['name'] ?? null;
 $email = $_POST['email'] ?? null;
 $tel = $_POST['tel'] ?? null;
+$password = $_POST['password'] ?? null;
 
 if (!$name || !$email || !$tel) {
     http_response_code(400);
-    echo json_encode(['error' => 'All fields are required.']);
+    echo json_encode(['error' => 'All fields except password are required.']);
     exit;
 }
 
 $photo = null;
 if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = 'C:/wamp64/www/wep-project/uploads/';
+    $upload_dir = '../../uploads/';
     $photo_name = basename($_FILES['photo']['name']);
     $photo_target_file = $upload_dir . $photo_name;
 
@@ -45,7 +46,7 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
 
 $passport_img = null;
 if (isset($_FILES['passport_img']) && $_FILES['passport_img']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = 'C:/wamp64/www/wep-project/uploads/';
+    $upload_dir = '../../uploads/';
     $passport_name = basename($_FILES['passport_img']['name']);
     $passport_target_file = $upload_dir . $passport_name;
 
@@ -58,6 +59,7 @@ if (isset($_FILES['passport_img']) && $_FILES['passport_img']['error'] === UPLOA
 }
 
 $query = "UPDATE passengers SET name = ?, email = ?, tel = ?" .
+    ($password ? ", password = ?" : "") .
     ($photo ? ", photo = ?" : "") .
     ($passport_img ? ", passport_img = ?" : "") .
     " WHERE id = ?";
@@ -69,8 +71,18 @@ if (!$stmt) {
     exit;
 }
 
-if ($photo && $passport_img) {
-    $stmt->bind_param('sssssi', $name, $email, $tel, $photo, $passport_img, $passenger_id);
+$hashed_password = $password ? password_hash($password, PASSWORD_BCRYPT) : null;
+
+if ($photo && $passport_img && $password) {
+    $stmt->bind_param('ssssssi', $name, $email, $tel, $hashed_password, $photo, $passport_img, $passenger_id);
+} elseif ($photo && $password) {
+    $stmt->bind_param('ssssi', $name, $email, $tel, $hashed_password, $photo, $passenger_id);
+} elseif ($passport_img && $password) {
+    $stmt->bind_param('ssssi', $name, $email, $tel, $hashed_password, $passport_img, $passenger_id);
+} elseif ($password) {
+    $stmt->bind_param('ssssi', $name, $email, $tel, $hashed_password, $passenger_id);
+} elseif ($photo && $passport_img) {
+    $stmt->bind_param('ssssi', $name, $email, $tel, $photo, $passport_img, $passenger_id);
 } elseif ($photo) {
     $stmt->bind_param('ssssi', $name, $email, $tel, $photo, $passenger_id);
 } elseif ($passport_img) {

@@ -17,37 +17,24 @@
                 return;
             }
 
-            document.getElementById('company-name').textContent = data.name || 'N/A';
-            document.getElementById('company-bio').textContent = data.bio || 'N/A';
-            document.getElementById('company-address').textContent = data.address || 'N/A';
+            document.getElementById('name').textContent = data.name || 'N/A';
+            document.getElementById('bio').textContent = data.bio || 'N/A';
+            document.getElementById('address').textContent = data.address || 'N/A';
+            document.getElementById('tel').textContent = data.tel || 'N/A';
+            document.getElementById('loc').textContent = data.loc || 'N/A';
+            document.getElementById('account-balance').textContent = `$${data.account_balance || '0.00'}`;
 
-            const logoContainer = document.getElementById('company-logo');
+            const profilePicElement = document.getElementById('profile-picture');
             if (data.photo) {
-                const timestamp = new Date().getTime(); 
+                const timestamp = new Date().getTime();
                 const img = document.createElement('img');
                 img.src = `../../uploads/${data.photo}?t=${timestamp}`;
                 img.alt = 'Company Logo';
                 img.width = 150;
-                logoContainer.innerHTML = ''; 
-                logoContainer.appendChild(img);
+                profilePicElement.innerHTML = '';
+                profilePicElement.appendChild(img);
             } else {
-                logoContainer.innerHTML = '<p>No logo available.</p>';
-            }
-
-            const flightsList = document.getElementById('flights-list');
-            flightsList.innerHTML = '';
-            if (data.flights && data.flights.length > 0) {
-                data.flights.forEach(flight => {
-                    const li = document.createElement('li');
-                    li.textContent = `Flight: ${flight.name}, Itinerary: ${flight.itinerary}, Fees: $${flight.fees}`;
-                    flightsList.appendChild(li);
-                    const link = document.createElement('a');
-                    link.href = `GetAllFlights.html?id=${flight.id}`;
-                    link.textContent = "See details";
-                    li.appendChild(link);
-                });
-            } else {
-                flightsList.textContent = 'No flights available.';
+                profilePicElement.innerHTML = '<p>No logo available.</p>';
             }
         })
         .catch(error => {
@@ -58,14 +45,14 @@
 <body>
     <div class="profile-container">
         <h1>Company Profile</h1>
-        <div id="company-logo" class="company-logo"></div>
-        <p><strong>Name:</strong> <span id="company-name">Loading...</span></p>
-        <p><strong>Bio:</strong> <span id="company-bio">Loading...</span></p>
-        <p><strong>Address:</strong> <span id="company-address">Loading...</span></p>
+        <p><strong>Name:</strong> <span id="name">Loading...</span></p>
+        <p><strong>Bio:</strong> <span id="bio">Loading...</span></p>
+        <p><strong>Address:</strong> <span id="address">Loading...</span></p>
+        <p><strong>Telephone:</strong> <span id="tel">Loading...</span></p>
+        <p><strong>Location:</strong> <span id="loc">Loading...</span></p>
+        <p><strong>Account Balance:</strong> <span id="account-balance">Loading...</span></p>
 
-        <h2>Available Flights</h2>
-        <ul id="flights-list">Loading...</ul>
-
+        <div id="profile-picture"></div>
         <button onclick="window.location.href = 'edit-profile.html';">Edit Profile</button>
     </div>
 </body>

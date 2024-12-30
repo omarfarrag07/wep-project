@@ -26,7 +26,7 @@
             if (data.photo) {
                 const timestamp = new Date().getTime(); 
                 const img = document.createElement('img');
-                img.src = `http://localhost/wep-project/uploads/${data.photo}?t=${timestamp}`;
+                img.src = `../../uploads/${data.photo}?t=${timestamp}`;
                 img.alt = 'Profile Picture';
                 img.width = 150;
                 profilePicElement.innerHTML = '';
@@ -39,7 +39,7 @@
             if (data.passport_img) {
                 const timestamp = new Date().getTime(); 
                 const img = document.createElement('img');
-                img.src = `http://localhost/wep-project/uploads/${data.passport_img}?t=${timestamp}`;
+                img.src = `../../uploads/${data.passport_img}?t=${timestamp}`;
                 img.alt = 'Passport Image';
                 img.width = 150;
                 passportPicElement.innerHTML = ''; 
