@@ -25,27 +25,27 @@
     </button>
 
     <script>
-        // Function to fetch and display flight details
+        
         function fetchFlightDetails() {
-            // Get the flight_id from the URL query string
+            
             const urlParams = new URLSearchParams(window.location.search);
-            const flightId = urlParams.get('flight_id'); // Get the flight_id from the URL
+            const flightId = urlParams.get('flight_id'); 
 
             if (!flightId) {
                 document.getElementById('flight-details').innerHTML = `<p>Flight ID is missing in the URL.</p>`;
                 return;
             }
 
-            // Fetch flight details using the flight_id
+         
             fetch(`../../backend/passengars/details.php?flight_id=${flightId}`)
-                .then(response => response.text()) // Assuming the PHP file returns the data as plain text
+                .then(response => response.text())
                 .then(data => {
                     const flightDetailsContainer = document.getElementById('flight-details');
                     if (data.includes("Flight ID")) {
-                        // Split the data into lines and map it into table rows
+                       
                         const rows = data
-                            .split('\n') // Split response into lines
-                            .filter(line => line.trim() !== "") // Remove empty lines
+                            .split('\n') 
+                            .filter(line => line.trim() !== "") 
                             .map(line => {
                                 const [field, value] = line.split(':'); // Split field and value
                                 return `
