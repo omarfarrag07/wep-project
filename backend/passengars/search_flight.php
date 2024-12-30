@@ -46,4 +46,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo json_encode(['message' => 'No flights found']);
     }
 }
+}
 ?>
