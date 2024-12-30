@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <link rel="stylesheet" href="../css/passenger.css">
+</head>
+<body>
+    
+    <div class="navbar">
+        <div class="logo">
+           
+            <img src="../../images/logo.webp" alt="Logo">
+        </div>
+        <ul class="nav-links">
+        </ul>
+    </div>
+    <header>
+        <h1>Flight Details</h1>
+    </header>
+    <div id="flight-details"></div>
+    <button>
+        <a href="../../backend/passengars/book.php">Book this flight from here</a>
+    </button>
+
+    <script>
+        // Function to fetch and display flight details
+        function fetchFlightDetails() {
+            // Get the flight_id from the URL query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const flightId = urlParams.get('flight_id'); // Get the flight_id from the URL
+
+            if (!flightId) {
+                document.getElementById('flight-details').innerHTML = `<p>Flight ID is missing in the URL.</p>`;
+                return;
+            }
+
+            // Fetch flight details using the flight_id
+            fetch(`../../backend/passengars/details.php?flight_id=${flightId}`)
+                .then(response => response.text()) // Assuming the PHP file returns the data as plain text
+                .then(data => {
+                    const flightDetailsContainer = document.getElementById('flight-details');
+                    if (data.includes("Flight ID")) {
+                        // Split the data into lines and map it into table rows
+                        const rows = data
+                            .split('\n') // Split response into lines
+                            .filter(line => line.trim() !== "") // Remove empty lines
+                            .map(line => {
+                                const [field, value] = line.split(':'); // Split field and value
+                                return `
+                                    <tr>
+                                        <td>${field.trim()}</td>
+                                        <td>${value ? value.trim() : ''}</td>
+                                    </tr>
+                                `;
+                            })
+                            .join(''); 
+
+                        flightDetailsContainer.innerHTML = `
+                            <table class="flight-table">
+                                <thead>
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${rows}
+                                </tbody>
+                            </table>
+                        `;
+                    } else {
+                        flightDetailsContainer.innerHTML = `
+                            <p>No flight found with the provided ID.</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('flight-details').innerHTML = `
+                        <p>Error loading flight details: ${error.message}</p>
+                    `;
+                });
+        }
+
+        window.onload = fetchFlightDetails;
+    </script>
+</body>
+</html>

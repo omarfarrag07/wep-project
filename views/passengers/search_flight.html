@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Flights</title>
+    <link rel="stylesheet" href="../css/passenger.css">
+    <script>
+        // Function to show the search form based on the option clicked
+        function showSearchForm(formId) {
+            // Hide all search forms
+            document.querySelectorAll('.search-form').forEach(form => form.classList.remove('active'));
+            // Show the selected form
+            document.getElementById(formId).classList.add('active');
+        }
+
+        // Display search results
+        function displayFlights(flights) {
+            const flightList = document.getElementById('flight-list');
+            if (flights.length === 0) {
+                flightList.innerHTML = `<p>No flights found for the selected criteria.</p>`;
+                return;
+            }
+            let items = '';
+            flights.forEach(flight => {
+                items += `
+                    <div class="flight-item">
+                        <img src="../../images/plane.jpg" class="flight-image" alt="Plane">
+                        <div class="flight-info">
+                            <a href="../../views/passengers/FlightDetails.html?flight_id=${flight.id}">
+                                <h2>${flight.name}</h2>
+                            </a>
+                            <p>${flight.itinerary || 'No itinerary available'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            flightList.innerHTML = items;
+        }
+
+        // Fetch search results from the backend
+        function fetchSearchResults(form) {
+            const formData = new FormData(form);
+            const queryString = new URLSearchParams(formData).toString();
+            fetch(`../../backend/passengars/search_flight.php?${queryString}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        displayFlights(data);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('flight-list').innerHTML = `<p>Error loading flights: ${error.message}</p>`;
+                });
+        }
+
+        // Handle form submission (search)
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            fetchSearchResults(event.target);
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="../../images/logo.webp" alt="Logo">
+        </div>
+        <ul class="nav-links">
+        </ul>
+    </div>
+    <h1>choose which field you want to search by 😄!</h1>
+
+    <!-- Search Option Buttons -->
+    <div class="search-options">
+    
+        <button onclick="showSearchForm('company-id-form')">Search by Company ID</button>
+        <button onclick="showSearchForm('start-time-form')">Search by Start/End Time</button>
+        <button onclick="showSearchForm('fees-form')">Search by Fees</button>
+    </div>
+
+    <!-- Search Forms (hidden by default, revealed on button click) -->
+
+    <!-- Company ID Form -->
+    <form id="company-id-form" class="search-form" onsubmit="handleFormSubmit(event)">
+        <label for="company_id">Company ID:</label>
+        <input type="number" id="company_id" name="company_id" placeholder="Enter company ID">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Start Time Form -->
+    <form id="start-time-form" class="search-form" onsubmit="handleFormSubmit(event)">
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" id="start_time" name="start_time">
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" id="end_time" name="end_time">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Fees Form -->
+    <form id="fees-form" class="search-form" onsubmit="handleFormSubmit(event)">
+        <label for="fees">Fees:</label>
+        <input type="number" id="fees" name="fees" placeholder="Enter fees">
+        <button type="submit">Search</button>
+    </form>
+
+    
+    <div id="flight-list">
+       
+       
+    </div>
+</body>
+</html>
