@@ -6,25 +6,27 @@ body {
 
 .header {
     width: 100%;
-    background-color: #2C3E50;
+    background-color: #053578;
     color: white;
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 20px;
 }
 
 
 .logo {
     display: flex;
     align-items: center;
+    
 }
 
 .logo img {
-    width: 70px;
-    height: 70px;
     border-radius: 50%;
     margin-right: 10px;
+    width: 100px;
+    height: auto;
+    border-radius: 100px;
 }
 
 .company-name {
@@ -52,7 +54,7 @@ body {
 }
 
 .header ul li a:hover {
-    background-color: #34495E;
+    background-color: #053578;
     border-radius: 5px;
 }
 
@@ -71,7 +73,7 @@ body {
 }
 
 .logout:hover {
-    background-color: #34495E;
+    background-color: #105396;
     border-radius: 5px;
 }
 
@@ -85,7 +87,7 @@ body {
 }
 .flightList_h2
 {
-    color: #34495E;
+    color: #0c5094;
     text-align: center;
 }
 .dashboard-body {

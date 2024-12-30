@@ -16,7 +16,7 @@ body {
 }
 
 header {
-    background-color: #0056b3;
+    background-color: #053578;
     color: white;
     padding: 1em 0;
     text-align: center;
@@ -57,7 +57,7 @@ section {
 }
 
 section h2 {
-    color: #0056b3;
+    color: #053578;
     margin-bottom: 1em;
     font-size: 1.5em;
 }
@@ -70,7 +70,7 @@ table {
 }
 
 table thead {
-    background: #0056b3;
+    background: #053578;
     color: white;
 }
 

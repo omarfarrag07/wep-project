@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Details</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/companyflights.css">
 </head>
 <body>
     <nav class="navbar">
@@ -12,7 +12,8 @@
             <img src="../../images/logo.webp" alt="Company Logo">
         </div>
         <ul class="nav-links">
-
+            <li><a href="companyDashboard.html">DashBoard</a></li>
+            <li><a href="CompanyProfile.html">Profile</a></li>
             <li><a href="addflight.html">Add a new flight from here</a></li>
             <li><a href="GetAllFlights.html">Go to all Flights</a></li>
         </ul>
@@ -44,7 +45,7 @@
                             <tr><td>End Time:</td><td>${data.end_time}</td></tr>
                             <tr><td>Max Passengers:</td><td>${data.max_passengers}</td></tr>
                             <tr><td>Registered Passengers:</td><td>${data.registered_passengers}</td></tr>
-                            <tr><td>Pending Passengers:</td><td>${data.pending_passengers}</td></tr>
+                            <tr><td>Empty seats:</td><td>${data.pending_passengers}</td></tr>
                             <tr><td>Flight Status:</td><td>${data.is_completed ? 'Completed' : 'Pending'}</td></tr>
                         `;
                     }
