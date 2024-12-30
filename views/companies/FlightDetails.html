@@ -23,12 +23,16 @@
     </header>
     <section class="flight-details">
         <table id="details-content"></table>
+        <div class="cancel-flight">
+            <button id="cancel-flight-btn" style="display: none;">Cancel Flight</button>
+        </div>
     </section>
    
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const flightId = urlParams.get('id');
         const detailsContent = document.getElementById('details-content');
+        const cancelFlightBtn = document.getElementById('cancel-flight-btn');
 
         if (flightId) {
             fetch(`../../backend/companies/FlightDetails.php?id=${flightId}`)
@@ -50,6 +54,11 @@
                             <tr><td>Empty seats:</td><td>${data.pending_passengers}</td></tr>
                             <tr><td>Flight Status:</td><td>${data.is_completed ? 'Completed' : 'Pending'}</td></tr>
                         `;
+
+                        // Show cancel button if the flight is not completed
+                        if (!data.is_completed) {
+                            cancelFlightBtn.style.display = 'block';
+                        }
                     }
                 })
                 .catch(error => {
@@ -58,6 +67,28 @@
         } else {
             detailsContent.innerHTML = '<tr><td colspan="2">No flight ID provided in the URL.</td></tr>';
         }
+
+        cancelFlightBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to cancel this flight?')) {
+                fetch(`../../backend/companies/cancel.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: flightId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.href = 'companyDashboard.html';
+                    } else {
+                        alert('Error canceling flight: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error canceling flight: ' + error.message);
+                });
+            }
+        });
     </script>
 </body>
 </html>
