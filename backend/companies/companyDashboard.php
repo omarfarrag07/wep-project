@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-require '../db.php';
-
+require '../db.php'; 
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
@@ -12,14 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'company') {
 
 $company_id = $_SESSION['user_id'];
 
-error_log('Company ID: ' . $company_id);
-
-$sql = "
-    SELECT f.id , f.name, f.itinerary
-    FROM flights f
-    WHERE f.company_id = ?
-";
-
+$sql = "SELECT name, photo FROM companies WHERE id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     echo json_encode(['error' => 'Error preparing SQL statement']);
@@ -27,32 +19,42 @@ if ($stmt === false) {
 }
 
 $stmt->bind_param("i", $company_id);
-
 $stmt->execute();
 
-if ($stmt->errno) {
-    echo json_encode(['error' => 'Error executing query: ' . $stmt->error]);
+$result = $stmt->get_result();
+$company_info = $result->fetch_assoc();
+
+if (!$company_info) {
+    echo json_encode(['error' => 'Company not found']);
     exit;
 }
 
-$result = $stmt->get_result();
-
-$flights = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $flights[] = [
-            'id' => $row['id'],
-            'name' => $row['name'],
-            'itinerary' => $row['itinerary'],
-           
-        ];
-    }
-} else {
-    $flights = ['message' => 'No flights found for this company'];
+$sql_flights = "SELECT id, name, itinerary FROM flights WHERE company_id = ?";
+$stmt_flights = $conn->prepare($sql_flights);
+if ($stmt_flights === false) {
+    echo json_encode(['error' => 'Error preparing flights SQL statement']);
+    exit;
 }
 
-echo json_encode($flights);
+$stmt_flights->bind_param("i", $company_id);
+$stmt_flights->execute();
+$result_flights = $stmt_flights->get_result();
+
+$flights = [];
+while ($row = $result_flights->fetch_assoc()) {
+    $flights[] = [
+        'id' => $row['id'],
+        'name' => $row['name'],
+        'itinerary' => $row['itinerary'],
+    ];
+}
+
+echo json_encode([
+    'company_info' => $company_info,
+    'flights' => $flights,
+]);
 
 $stmt->close();
+$stmt_flights->close();
 $conn->close();
 ?>
