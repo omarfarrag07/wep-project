@@ -6,10 +6,9 @@
     <title>Profile</title>
     <link rel="stylesheet" href="profile.css">
     <script>
-        // Fetch user profile data
         fetch('http://localhost/wep-project/backend/passengers/profile.php', {
             method: 'GET',
-            credentials: 'include',  // Include cookies with the request
+            credentials: 'include',  
         })
         .then(response => response.json())
         .then(data => {
@@ -18,35 +17,32 @@
                 return;
             }
 
-            // Display user data
             document.getElementById('name').textContent = data.name || 'N/A';
             document.getElementById('email').textContent = data.email || 'N/A';
             document.getElementById('phone').textContent = data.tel || 'N/A';
             document.getElementById('account-balance').textContent = `$${data.account_balance || '0.00'}`;
 
-            // Display profile picture
             const profilePicElement = document.getElementById('profile-picture');
             if (data.photo) {
-                const timestamp = new Date().getTime(); // Prevent caching
+                const timestamp = new Date().getTime(); 
                 const img = document.createElement('img');
                 img.src = `http://localhost/wep-project/uploads/${data.photo}?t=${timestamp}`;
                 img.alt = 'Profile Picture';
                 img.width = 150;
-                profilePicElement.innerHTML = ''; // Clear previous content
+                profilePicElement.innerHTML = '';
                 profilePicElement.appendChild(img);
             } else {
                 profilePicElement.innerHTML = '<p>No profile picture available.</p>';
             }
 
-            // Display passport image
             const passportPicElement = document.getElementById('passport-image');
             if (data.passport_img) {
-                const timestamp = new Date().getTime(); // Prevent caching
+                const timestamp = new Date().getTime(); 
                 const img = document.createElement('img');
                 img.src = `http://localhost/wep-project/uploads/${data.passport_img}?t=${timestamp}`;
                 img.alt = 'Passport Image';
                 img.width = 150;
-                passportPicElement.innerHTML = ''; // Clear previous content
+                passportPicElement.innerHTML = ''; 
                 passportPicElement.appendChild(img);
             } else {
                 passportPicElement.innerHTML = '<p>No passport image available.</p>';
@@ -68,7 +64,7 @@
         <div id="profile-picture"></div>
         <div id="passport-image"></div>
 
-        <button onclick="window.location.href = 'edit.html';">Edit Profile</button>
+        <button onclick="window.location.href = 'edit-profile.html';">Edit Profile</button>
     </div>
 </body>
 </html>

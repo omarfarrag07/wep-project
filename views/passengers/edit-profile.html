@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="edit-profile.css">
+</head>
+<body>
+    <div class="edit-container">
+        <h1>Edit Profile</h1>
+        <form id="edit-form" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="tel">Telephone:</label>
+            <input type="tel" id="tel" name="tel" required>
+
+            <label for="photo">Profile Photo :</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+
+            <label for="passport_img">Passport Image :</label>
+            <input type="file" id="passport_img" name="passport_img" accept="image/*">
+
+            <button type="submit">Save Changes</button>
+        </form>
+        <button onclick="window.location.href='profile.html';">Cancel</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('edit-form');
+
+        fetch('http://localhost/wep-project/backend/passengers/profile.php', {
+            method: 'GET',
+            credentials: 'include',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            document.getElementById('name').value = data.name || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('tel').value = data.tel || '';
+        })
+        .catch(error => {
+            alert('Error loading data: ' + error.message);
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('http://localhost/wep-project/backend/passengers/edit-profile.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include', 
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert('Profile updated successfully!');
+                    window.location.href = 'profile.html'; // Redirect to the profile page after successful update
+                }
+            })
+            .catch(error => {
+                alert('Error updating profile: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile</title>
+    <link rel="stylesheet" href="profile.css">
+    <script>
+        fetch('http://localhost/wep-project/backend/companies/profile.php', {
+            method: 'GET',
+            credentials: 'include',  
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.body.innerHTML = `<p><strong>Error:</strong> ${data.error}</p>`;
+                return;
+            }
+
+            document.getElementById('company-name').textContent = data.name || 'N/A';
+            document.getElementById('company-bio').textContent = data.bio || 'N/A';
+            document.getElementById('company-address').textContent = data.address || 'N/A';
+
+            const logoContainer = document.getElementById('company-logo');
+            if (data.photo) {
+                const timestamp = new Date().getTime(); 
+                const img = document.createElement('img');
+                img.src = `http://localhost/wep-project/uploads/${data.photo}?t=${timestamp}`;
+                img.alt = 'Company Logo';
+                img.width = 150;
+                logoContainer.innerHTML = ''; 
+                logoContainer.appendChild(img);
+            } else {
+                logoContainer.innerHTML = '<p>No logo available.</p>';
+            }
+
+            const flightsList = document.getElementById('flights-list');
+            flightsList.innerHTML = '';
+            if (data.flights && data.flights.length > 0) {
+                data.flights.forEach(flight => {
+                    const li = document.createElement('li');
+                    li.textContent = `Flight: ${flight.name}, Itinerary: ${flight.itinerary}, Fees: $${flight.fees}`;
+                    flightsList.appendChild(li);
+                    const link = document.createElement('a');
+                    link.href = `GetAllFlights.html?id=${flight.id}`;
+                    link.textContent = "See details";
+                    li.appendChild(link);
+                });
+            } else {
+                flightsList.textContent = 'No flights available.';
+            }
+        })
+        .catch(error => {
+            document.body.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+        });
+    </script>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Company Profile</h1>
+        <div id="company-logo" class="company-logo"></div>
+        <p><strong>Name:</strong> <span id="company-name">Loading...</span></p>
+        <p><strong>Bio:</strong> <span id="company-bio">Loading...</span></p>
+        <p><strong>Address:</strong> <span id="company-address">Loading...</span></p>
+
+        <h2>Available Flights</h2>
+        <ul id="flights-list">Loading...</ul>
+
+        <button onclick="window.location.href = 'edit-profile.html';">Edit Profile</button>
+    </div>
+</body>
+</html>
