@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Company Profile</title>
-    <link rel="stylesheet" href="edit-profile.css">
+    <link rel="stylesheet" href="../css/company-edit-profile.css">
 </head>
 <body>
     <div class="edit-container">
@@ -31,7 +31,7 @@
         const form = document.getElementById('edit-form');
 
         // Preload current company info
-        fetch('http://localhost/wep-project/backend/companies/profile.php', {
+        fetch('../../backend/companies/profile.php', {
             method: 'GET',
             credentials: 'include',
         })
@@ -56,7 +56,7 @@
 
             const formData = new FormData(form);
 
-            fetch('http://localhost/wep-project/backend/companies/edit-profile.php', {
+            fetch('../../backend/companies/edit-profile.php', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',

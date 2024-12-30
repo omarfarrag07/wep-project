@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+    <link rel="stylesheet" href="../css/messsages.css">
+
+</head>
+<body>
+    <header>
+        Send a Message to Passengers
+    </header>
+    <div class="container">
+        <h2>Compose a Message</h2>
+        <form id="sendMessageForm">
+            <label for="flight">Select Flight</label>
+            <select id="flight" name="flight">
+                <option value="general">General (All Passengers)</option>
+                <!-- Dynamic options for flights will be inserted here -->
+            </select>
+            <label for="messageContent">Message Content</label>
+            <textarea id="messageContent" name="messageContent" rows="6" placeholder="Enter your message here..."></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+    <footer>
+        &copy; 2024 Flight Messaging System
+    </footer>
+    <script src="../js/sendMessages.js"></script>
+</body>
+</html>

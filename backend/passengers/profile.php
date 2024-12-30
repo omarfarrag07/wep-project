@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-require_once 'C:/wamp64/www/wep-project/backend/db.php';
+require_once '../db.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
