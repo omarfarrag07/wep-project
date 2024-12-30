@@ -8,7 +8,6 @@
             $tel=$_POST['tel'];
             $type = $_POST['type'];
             $photo = $_FILES['photo'];
-
             $target_dir="../uploads/";
             $photo_name=basename($photo["name"]);
             $target_file =$target_dir . $photo_name;
@@ -19,9 +18,11 @@
                 }else{
                     $table='passengers';
                 }
-                $query="INSERT INTO $table(name ,email,password,tel,photo) VALUES (?,?,?,?,?)";
+                $query = "INSERT INTO $table (name, email, password, tel, photo) VALUES (?, ?, ?, ?, ?)";
+
                 $stablish= $conn->prepare($query);
-                $stablish->bind_param('sssss',$name,$email,$password,$tel,$photo_name);
+                $stablish->bind_param('sssss', $name, $email, $password, $tel, $photo_name);
+
                 
                 if ($stablish->execute()) {
                    header("Location: ../views/login.html?success=1");
