@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo "Flight Details:\n";
         echo "Flight ID: " . $flight['id'] . "\n";
         echo "Flight Name: " . $flight['name'] . "\n";
+        echo "Flight Takeoff: " . $flight['takeoff'] . "\n";
+        echo "Flight Destination:" . $flight['destination'] . "\n";
         echo "Flight start time: " . $flight['start_time'] . "\n";
         echo "Flight end time:" . $flight['end_time'] . "\n";
         echo "Flight fees :" . $flight['fees'] . "\n";
