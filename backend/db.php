@@ -4,7 +4,7 @@
 $host = 'localhost';
 $db = 'flight_booking';
 $user = 'root';
-$pass = 'Callme02$';
+$pass = 'G4@67&*mQnY!';
 
 $conn = new mysqli($host, $user, $pass, $db);
 
