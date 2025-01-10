@@ -71,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         http_response_code(200);
         $stmt = $conn->prepare("UPDATE flights SET registered_passengers = registered_passengers + 1 WHERE id = ?");
         $stmt->bind_param("i", $flight_id);
+        $stmt->execute();
         $new_balance = $balance - $flight['fees'];
         $stmt = $conn->prepare("UPDATE passengers SET account_balance = ? WHERE id = ?");
         $stmt->bind_param("di", $new_balance, $passenger_id);
