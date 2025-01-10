@@ -213,10 +213,10 @@ button:active {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     padding: 20px;
-    width: 250px; /* Fixed width for each flight card */
+    width:250px; /* Fixed width for each flight card */
     text-align: center;
     transition: transform 0.3s;
-    flex-grow: 1; /* Ensures cards grow to fit the space */
+    flex-grow: 0; /* Ensures cards grow to fit the space */
 }
 
 .flight-item:hover {

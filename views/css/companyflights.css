@@ -178,7 +178,7 @@ button:active {
     width: 250px; /* Fixed width for each flight card */
     text-align: center;
     transition: transform 0.3s;
-    flex-grow: 1; /* Ensures cards grow to fit the space */
+    flex-grow: 0;/* Ensures cards grow to fit the space */
 }
 
 .flight-item:hover {
