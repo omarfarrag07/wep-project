@@ -49,13 +49,15 @@ if (isset($data['id']) && is_numeric($data['id'])) {
             $stmt = $conn->prepare($deleteFlightQuery);
             $stmt->bind_param('i', $flight_id);
             $stmt->execute();
-
+            $totalRefund = $passengerCount * $flightFees;
             if ($passengerCount > 0) {
+                $totalRefund = $passengerCount * $flightFees;
                 $updateCompanyQuery = "UPDATE companies SET account_balance = account_balance - ? WHERE id = ?";
                 $stmt = $conn->prepare($updateCompanyQuery);
-                $stmt->bind_param('di', $flightFees, $companyId);
+                $stmt->bind_param('di', $totalRefund, $companyId);
                 $stmt->execute();
             }
+            
 
             $conn->commit();
 

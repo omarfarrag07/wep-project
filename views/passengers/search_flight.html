@@ -23,6 +23,7 @@
         <button onclick="showSearchForm('company-id-form')">Search by Company ID</button>
         <button onclick="showSearchForm('start-time-form')">Search by Start/End Time</button>
         <button onclick="showSearchForm('fees-form')">Search by Fees</button>
+        <button onclick="showSearchForm('from-to-form')">Search by From/To</button>
     </div>
 
  
@@ -45,6 +46,14 @@
     <form id="fees-form" class="search-form" onsubmit="handleFormSubmit(event)">
         <label for="fees">Fees:</label>
         <input type="number" id="fees" name="fees" placeholder="Enter fees">
+        <button type="submit">Search</button>
+    </form>
+
+    <form id="from-to-form" class="search-form" onsubmit="handleFormSubmit(event)">
+        <label for="from">From:</label>
+        <input type="text" id="from" name="takeoff" placeholder="Enter departure location">
+        <label for="to">To:</label>
+        <input type="text" id="to" name="destination" placeholder="Enter destination location">
         <button type="submit">Search</button>
     </form>
 

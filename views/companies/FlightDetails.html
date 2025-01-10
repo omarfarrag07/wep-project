@@ -55,7 +55,6 @@
                             <tr><td>Flight Status:</td><td>${data.is_completed ? 'Completed' : 'Pending'}</td></tr>
                         `;
 
-                        // Show cancel button if the flight is not completed
                         if (!data.is_completed) {
                             cancelFlightBtn.style.display = 'block';
                         }
