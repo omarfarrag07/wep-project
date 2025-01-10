@@ -7,55 +7,57 @@
     <link rel="stylesheet" href="../css/passenger.css">
 </head>
 <body>
-    
     <div class="navbar">
         <div class="logo">
-           
             <img src="../../images/logo.webp" alt="Logo">
         </div>
-        <ul class="nav-links">
-        </ul>
+        <ul class="nav-links"></ul>
     </div>
     <header>
         <h1>Flight Details</h1>
     </header>
     <div id="flight-details"></div>
-    <button>
-        <a href="../../backend/passengars/book.php">Book this flight from here</a>
-    </button>
+
+    <!-- Booking form dynamically populated -->
+    <label for="paymentMethod">Choose payment method:</label>
+    <select id="paymentMethod" required>
+        <option value="" disabled selected>Select a method</option>
+        <option value="1">Cash</option>
+        <option value="0">Credit</option>
+    </select>
+    <button id="bookFlightButton">Book this flight</button>
 
     <script>
-        
+        const flightDetailsContainer = document.getElementById('flight-details');
+        const bookFlightButton = document.getElementById('bookFlightButton');
+
         function fetchFlightDetails() {
-            
             const urlParams = new URLSearchParams(window.location.search);
             const flightId = urlParams.get('flight_id'); 
+            // const passengerId = urlParams.get('passenger_id');
 
-            if (!flightId) {
-                document.getElementById('flight-details').innerHTML = `<p>Flight ID is missing in the URL.</p>`;
+            if (!flightId ) {
+                flightDetailsContainer.innerHTML = `<p>Missing required information in the URL.</p>`;
                 return;
             }
 
-         
+            // Store flightId and passengerId for later use
+            bookFlightButton.dataset.flightId = flightId;
+            // bookFlightButton.dataset.passengerId = passengerId;
+
+            // Fetch flight details
             fetch(`../../backend/passengars/details.php?flight_id=${flightId}`)
                 .then(response => response.text())
                 .then(data => {
-                    const flightDetailsContainer = document.getElementById('flight-details');
                     if (data.includes("Flight ID")) {
-                       
                         const rows = data
-                            .split('\n') 
-                            .filter(line => line.trim() !== "") 
+                            .split('\n')
+                            .filter(line => line.trim() !== "")
                             .map(line => {
-                                const [field, value] = line.split(':'); // Split field and value
-                                return `
-                                    <tr>
-                                        <td>${field.trim()}</td>
-                                        <td>${value ? value.trim() : ''}</td>
-                                    </tr>
-                                `;
+                                const [field, value] = line.split(':');
+                                return `<tr><td>${field.trim()}</td><td>${value ? value.trim() : ''}</td></tr>`;
                             })
-                            .join(''); 
+                            .join('');
 
                         flightDetailsContainer.innerHTML = `
                             <table class="flight-table">
@@ -68,22 +70,53 @@
                                 <tbody>
                                     ${rows}
                                 </tbody>
-                            </table>
-                        `;
+                            </table>`;
                     } else {
-                        flightDetailsContainer.innerHTML = `
-                            <p>No flight found with the provided ID.</p>
-                        `;
+                        flightDetailsContainer.innerHTML = `<p>No flight found with the provided ID.</p>`;
                     }
                 })
                 .catch(error => {
-                    document.getElementById('flight-details').innerHTML = `
-                        <p>Error loading flight details: ${error.message}</p>
-                    `;
+                    flightDetailsContainer.innerHTML = `<p>Error loading flight details: ${error.message}</p>`;
                 });
         }
 
+        function bookFlight() {
+            const flightId = bookFlightButton.dataset.flightId;
+            // const passengerId = bookFlightButton.dataset.passengerId;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            if (!flightId || !paymentMethod) {
+                alert('Please complete all fields before booking.');
+                return;
+            }
+
+            fetch('../../backend/passengars/book.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    flight_id: flightId,
+                    cash: paymentMethod
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Flight booked successfully!');
+                    window.location.href = 'passengerDashboard.html'; // Redirect to the passenger dashboard
+                } else {
+                    alert('Error booking flight: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error booking flight: ' + error.message);
+            });
+        }
+
+        // Initialize flight details on page load
         window.onload = fetchFlightDetails;
+
+        // Add event listener to the book button
+        bookFlightButton.addEventListener('click', bookFlight);
     </script>
 </body>
 </html>

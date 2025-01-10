@@ -1,61 +1,78 @@
 <?php
+
+header('Content-Type: application/json');
 include('../db.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $flight_id = isset($_POST['flight_id']) ? intval($_POST['flight_id']) : null;
-    $passenger_id = isset($_POST['passenger_id']) ? intval($_POST['passenger_id']) : null;
-    $cash = isset($_POST['cash']) ? intval($_POST['cash']) : null;
+    // Decode JSON data from request body
+    $input = json_decode(file_get_contents('php://input'), true);
 
-if (!$flight_id || !$passenger_id||$cash===null) {
-    http_response_code(400);
-    echo "Passenger and flight ID are required.";
-    exit;
-}
+    // Extract variables
+    $flight_id = isset($input['flight_id']) ? intval($input['flight_id']) : null;
+    $cash = isset($input['cash']) ? intval($input['cash']) : null;
+    session_start(); // Ensure session is started
+    $passenger_id = $_SESSION['user_id'] ?? null;
 
-
-    $stmt = $conn->prepare("SELECT * FROM flights WHERE id = ?");
-     $stmt->bind_param("i", $flight_id);
-     $stmt->execute();
-     $result_flight = $stmt->get_result();
- 
-     $stmt = $conn->prepare("SELECT * FROM passengers WHERE id = ?");
-     $stmt->bind_param("i", $passenger_id);
-     $stmt->execute();
-     $result_passenger = $stmt->get_result();
-    if ($result_flight->num_rows == 0 || $result_passenger->num_rows == 0) {
-        http_response_code(405);
-        echo"Passenger or flight ID incorrect";
+    // Validate input
+    if (!$flight_id || !$passenger_id || $cash === null) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "Passenger and flight ID are required."]);
         exit;
     }
+
+    // Check flight and passenger existence
+    $stmt = $conn->prepare("SELECT * FROM flights WHERE id = ?");
+    $stmt->bind_param("i", $flight_id);
+    $stmt->execute();
+    $result_flight = $stmt->get_result();
+
+    $stmt = $conn->prepare("SELECT * FROM passengers WHERE id = ?");
+    $stmt->bind_param("i", $passenger_id);
+    $stmt->execute();
+    $result_passenger = $stmt->get_result();
+
+    if ($result_flight->num_rows == 0 || $result_passenger->num_rows == 0) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "Passenger or flight ID is incorrect."]);
+        exit;
+    }
+
     $flight = $result_flight->fetch_assoc();
     $passenger = $result_passenger->fetch_assoc();
-    if ($cash ===0){
-        $balance=$passenger['account_balance'];
-        $fees=$flight['fees'];
-        if($balance<$fees){
-        http_response_code(500);
-        exit;
+
+    // Check payment method and balance
+    if ($cash === 0) {
+        $balance = $passenger['account_balance'];
+        $fees = $flight['fees'];
+        if ($balance < $fees) {
+            http_response_code(400);
+            echo json_encode(["success" => false, "message" => "Insufficient balance for booking."]);
+            exit;
+        }
     }
-        
-    }
-    $stmt = $conn->prepare("SELECT * FROM flight_passenger WHERE flight_id =$flight_id AND passenger_id=$passenger_id ");
+
+    // Check if the passenger is already registered for the flight
+    $stmt = $conn->prepare("SELECT * FROM flight_passenger WHERE flight_id = ? AND passenger_id = ?");
+    $stmt->bind_param("ii", $flight_id, $passenger_id);
     $stmt->execute();
-    $resualt=$stmt->get_result();
-    if($resualt->num_rows > 0){
-        http_response_code(205);
-        echo "Passenger is already registered in the flight";
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "Passenger is already registered for the flight."]);
         exit;
     }
+
+    // Add passenger to the flight
     $stmt = $conn->prepare("INSERT INTO flight_passenger (flight_id, passenger_id) VALUES (?, ?)");
     $stmt->bind_param("ii", $flight_id, $passenger_id);
-    if ($stmt->execute()) {
-        http_response_code(205);
-        echo "Passenger successfully added to the flight.";
-    } else {
-        http_response_code(400);
-        echo "Error: Could not insert passenger to the flight.";
-    }
-    
-}
 
+    if ($stmt->execute()) {
+        http_response_code(200);
+        echo json_encode(["success" => true, "message" => "Passenger successfully added to the flight."]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["success" => false, "message" => "Error: Could not insert passenger to the flight."]);
+    }
+}
 ?>

@@ -81,6 +81,8 @@
             flightList.innerHTML = `<p>No flights found for the selected criteria.</p>`;
             return;
         }
+        // const passengerId=localStorage.get('')
+
         let items = '';
         flights.forEach(flight => {
             items += `
