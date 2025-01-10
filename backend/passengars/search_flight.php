@@ -36,14 +36,16 @@ if ($destination) {
     
     $flights = [];
     
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $flights[] = $row;
-        }
-        header('Content-Type: application/json');
-        echo json_encode($flights);
-    } else {
-        echo json_encode(['message' => 'No flights found']);
+    $flights = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $flights[] = $row;
     }
+}
+
+// Return an empty array if no results are found
+header('Content-Type: application/json');
+echo json_encode($flights);
+
 }
 ?>

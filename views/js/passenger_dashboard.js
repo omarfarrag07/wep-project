@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             row.innerHTML=`
             <td>${flight.id}</td>
             <td>${flight.name}</td>
-            <td>${flight.intinerary}</td>
+            <td>${flight.itinerary}</td>
             <td>${flight.start_time}</td>
             <td>${flight.fees}</td>
             `;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             row.innerHTML=`
                  <td>${flight.id}</td>
                 <td>${flight.name}</td>
-                <td>${flight.intinerary}</td>
+                <td>${flight.itinerary}</td>
                 <td>${flight.start_time}</td>
                 <td>${flight.fees}</td>
             `;
