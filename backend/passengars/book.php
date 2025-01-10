@@ -69,6 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         http_response_code(200);
+        $stmt = $conn->prepare("UPDATE flights SET registered_passengers = registered_passengers + 1 WHERE id = ?");
+        $stmt->bind_param("i", $flight_id);
+        $new_balance = $balance - $flight['fees'];
+        $stmt = $conn->prepare("UPDATE passengers SET account_balance = ? WHERE id = ?");
+        $stmt->bind_param("di", $new_balance, $passenger_id);
+        $stmt->execute();
         echo json_encode(["success" => true, "message" => "Passenger successfully added to the flight."]);
     } else {
         http_response_code(500);
